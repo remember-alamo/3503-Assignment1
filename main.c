@@ -5,7 +5,7 @@ int add(int a, int b){
 }
 
 int main(void){
-    int x = 5;
+    int x = 3;
     int y = 7;
     int sum = add(x,y);
 
