@@ -1,10 +1,13 @@
 #include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 
-uint32_t number = 156;
-char digit = '5';
 
-char binary_string[33];
-char hex_string[9];
+void test(int *out)
+{
+    *out = *out + 5;
+}
+
 
 void div_convert(uint32_t n, int base, char *out){
     char temp[65];
@@ -22,32 +25,44 @@ void div_convert(uint32_t n, int base, char *out){
         n = n / base;
 
         //convert digit to character
-        if (remainder < 0){ temp[pos++] = '0' + remainder; }
-        else { temp[pos++] = 'A' + (remainder - 10); }
+        if (remainder < 10)
+        { 
+            temp[pos++] = '0' + remainder; 
+            printf("I'M RUNNING!!! %c\n", temp[pos-1]);
+        }
+        else
+        { 
+            temp[pos++] = 'A' + (remainder - 10); 
+        }
     }
 
     //REVERSE the result
-    while (n > 0){
-        /*
-        1. get length of array
-        2. set up new array
-        3. pass in the results of the temp array, from bottom to top of the array
-        4. go through array again, convert any digits over 9 to their respective hex letters
-        5. pass array into *out
-        6. win
-        */
+    temp[pos++] = '\0';
+    printf("i'm an artist from clang and this is my %s\n", temp);
+    int length = pos;
+    
+    //the position we got to IS the length of the array, might as well create one with this length.
+    char result[length];
+
+    /*
+        fill the result array, the position we got to in the buffer is already there.
+        thus... we subtract the position right away, because we don't wanna have the result
+        start with a null terminator...!
+    */
+    printf("i'm %d long\n", length);
+
+    pos -= 2;
+    for(int i = 0; pos >= 0; i++)
+    {
+        result[i] = temp[pos];
+        printf("char stored: %c\n", result[i]);
+        printf("ohhh me pingy MEP INGY: %d\n", pos);
+        pos--;
     }
+    result[length-1] = '\0';
+    printf("i'm an artist from clang and this is my %s\n", result);
 
-
-    //TODO: figure it out dude
-
-    //don't forget about hexadecimal. so. that's probably an if statement and!!! just so you don't forget it!
-    //10: A
-    //11: B
-    //12: C
-    //13: D
-    //14: E
-    //15: F
+    strncpy(out, result, length);
 }
 
 void sub_convert(uint32_t n, int base, char*out)
