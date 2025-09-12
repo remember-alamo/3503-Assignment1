@@ -28,7 +28,6 @@ void div_convert(uint32_t n, int base, char *out){
         if (remainder < 10)
         { 
             temp[pos++] = '0' + remainder; 
-            printf("I'M RUNNING!!! %c\n", temp[pos-1]);
         }
         else
         { 
@@ -38,7 +37,6 @@ void div_convert(uint32_t n, int base, char *out){
 
     //REVERSE the result
     temp[pos++] = '\0';
-    printf("i'm an artist from clang and this is my %s\n", temp);
     int length = pos;
     
     //the position we got to IS the length of the array, might as well create one with this length.
@@ -49,24 +47,22 @@ void div_convert(uint32_t n, int base, char *out){
         thus... we subtract the position right away, because we don't wanna have the result
         start with a null terminator...!
     */
-    printf("i'm %d long\n", length);
 
     pos -= 2;
     for(int i = 0; pos >= 0; i++)
     {
         result[i] = temp[pos];
-        printf("char stored: %c\n", result[i]);
-        printf("ohhh me pingy MEP INGY: %d\n", pos);
         pos--;
     }
     result[length-1] = '\0';
-    printf("i'm an artist from clang and this is my %s\n", result);
 
     strncpy(out, result, length);
 }
 
 void sub_convert(uint32_t n, int base, char*out)
 {
+    char temp[65];
+    int pos = 0;
     /*
     1. create array buffer
     2. begin doing math
