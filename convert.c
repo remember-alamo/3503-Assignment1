@@ -1,13 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-
-
-void test(int *out)
-{
-    *out = *out + 5;
-}
-
+#include <math.h>
 
 void div_convert(uint32_t n, int base, char *out){
     char temp[65];
@@ -63,18 +57,67 @@ void sub_convert(uint32_t n, int base, char*out)
 {
     char temp[65];
     int pos = 0;
-    /*
-    1. create array buffer
-    2. begin doing math
-        z. f is the decimal number
-        a. start looping through p^n where p is the base, and n is the power position
-        b. if p^n is too big, n-1
-        c. if p^n is below f, multply it 
-        d. if p^n * 2 is still too big, multiply by 3, or 4, keep going until it's too big again
-        e. record the multiplier somewhere in the array buffer
-    3. reverse the array
-    4. pass the array buffer to *out
-    5. win!
-    */
+
+    int power_result = 0; // used to determine which power to count down from.
+    int multiplier = 1; // will be changed throughout the loop to store into the buffer.
+    int power_max = 0; // power to count down from;
+
+    for(int i = 0; power_result <= n; i++)
+    {
+        power_result = pow(base, i);
+        printf("%d\n", i);
+        if(power_result >= n)
+        {
+            power_max = i-1; //since the result is greater than n, subtract 1 from i to get the smaller number
+        }
+    }
+    printf("%d\n", power_max);
+    printf("%d\n", power_result);
+
+    
+    
+    while (n > 0)
+    {
+        int quotient = n / pow(base, power_max);
+        
+        if (quotient < 10)
+        { 
+            temp[pos++] = '0' + quotient; 
+        }
+        else
+        { 
+            temp[pos++] = 'A' + (quotient - 10); 
+        }
+        
+        // subtraction process, b^i * q 
+        n = n - (pow(base, power_max--) * quotient); 
+    }
+
+    temp[pos] = '\0';
+    printf("%s\n", temp);
 }
 
+void print_tables ( uint32_t n ) 
+{
+    char bin [33] , oct [12] , hex [9];
+
+    // Original number
+    div_convert (n , 2 , bin ) ;
+    div_convert (n , 8 , oct ) ;
+    div_convert (n , 16 , hex ) ;
+    printf ( " Original : Binary = %s Octal = %s Decimal = %u Hex = %s\n", bin, oct, n,hex);
+
+    // Left shift by 3
+    uint32_t shifted = n << 3;
+    div_convert ( shifted , 2 , bin ) ;
+    div_convert ( shifted , 8 , oct ) ;
+    div_convert ( shifted , 16 , hex ) ;
+    printf ( " Left Shift by 3: Binary =%s Octal =%s Decimal =%u Hex =%s\n", bin, oct, shifted, hex);
+
+    // AND with 0 xFF
+    uint32_t masked = n & 0xFF ;
+    div_convert ( masked, 2, bin );
+    div_convert ( masked, 8, oct );
+    div_convert ( masked, 16, hex );
+    printf ( " AND with 0xFF: Binary=%s Octal=%s Decimal =%u Hex =%s\n", bin, oct, shifted, hex);
+}

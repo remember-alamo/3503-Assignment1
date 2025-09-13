@@ -3,7 +3,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+//methods that we're gonna use
 void div_convert(uint32_t n, int base, char *out);
+void sub_convert(uint32_t n, int base, char *out);
+void print_tables ( uint32_t n );
 
 int main(void)
 {
@@ -73,7 +76,8 @@ int main(void)
             char exp_output [pos - space_base + 1];
 
             //filling up the characters from the line, variable by variable. space by space...
-
+            // the positions were saved in an earlier loop of the line, here, the inputs to the method
+            // will be filled by going through the lines one more time.
             for(int i = 0; i <= sizeof(dec_ch) - 1; i++)
             {
                 dec_ch[i] = line[space_method + i];
@@ -107,6 +111,8 @@ int main(void)
         }
     }
     fclose(file);
+
+    sub_convert(255, 16, &buffer);
 
     return 0;
 }
