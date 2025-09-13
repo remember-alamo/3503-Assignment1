@@ -65,19 +65,15 @@ void sub_convert(uint32_t n, int base, char*out)
     for(int i = 0; power_result <= n; i++)
     {
         power_result = pow(base, i);
-        printf("%d\n", i);
         if(power_result >= n)
         {
             power_max = i-1; //since the result is greater than n, subtract 1 from i to get the smaller number
         }
     }
-    printf("%d\n", power_max);
-    printf("%d\n", power_result);
-
-    
     
     while (n > 0)
     {
+        //getting the number to multiply the base^power by, and to store into the buffer
         int quotient = n / pow(base, power_max);
         
         if (quotient < 10)
@@ -93,8 +89,16 @@ void sub_convert(uint32_t n, int base, char*out)
         n = n - (pow(base, power_max--) * quotient); 
     }
 
-    temp[pos] = '\0';
-    printf("%s\n", temp);
+    temp[pos++] = '\0';
+    int length = pos;
+
+    char result[length];
+    for(int i = 0; i <= length; i++)
+    {
+        result[i] = temp[i];
+    }
+    result[length-1] = '\0';
+    strncpy(out, result, pos);
 }
 
 void print_tables ( uint32_t n ) 
@@ -105,19 +109,19 @@ void print_tables ( uint32_t n )
     div_convert (n , 2 , bin ) ;
     div_convert (n , 8 , oct ) ;
     div_convert (n , 16 , hex ) ;
-    printf ( " Original : Binary = %s Octal = %s Decimal = %u Hex = %s\n", bin, oct, n,hex);
+    printf ("Original : Binary = %s Octal = %s Decimal = %u Hex = %s\n", bin, oct, n,hex);
 
     // Left shift by 3
     uint32_t shifted = n << 3;
     div_convert ( shifted , 2 , bin ) ;
     div_convert ( shifted , 8 , oct ) ;
     div_convert ( shifted , 16 , hex ) ;
-    printf ( " Left Shift by 3: Binary =%s Octal =%s Decimal =%u Hex =%s\n", bin, oct, shifted, hex);
+    printf ("Left Shift by 3: Binary =%s Octal =%s Decimal =%u Hex =%s\n", bin, oct, shifted, hex);
 
     // AND with 0 xFF
     uint32_t masked = n & 0xFF ;
     div_convert ( masked, 2, bin );
     div_convert ( masked, 8, oct );
     div_convert ( masked, 16, hex );
-    printf ( " AND with 0xFF: Binary=%s Octal=%s Decimal =%u Hex =%s\n", bin, oct, shifted, hex);
+    printf ( "AND with 0xFF: Binary=%s Octal=%s Decimal =%u Hex =%s\n", bin, oct, shifted, hex);
 }
